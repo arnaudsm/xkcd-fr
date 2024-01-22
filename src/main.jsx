@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-const comicCount = 353;
+const comicCount = 500;
 
 function App() {
   const [number, setNumber] = useState(comicCount);
@@ -33,6 +33,7 @@ function App() {
       setMetadata(json);
     } catch (error) {
       console.log(error);
+      setMetadata({});
     }
     setNumber(newNumber);
     const href = `/${newNumber}`;
@@ -59,7 +60,9 @@ function App() {
   return (
     <>
       <div className="box header">
-        <a href="/"><img src="logo.png" alt="Logo" /></a>
+        <a href="/">
+          <img src="logo.png" alt="Logo" />
+        </a>
         <div>
           <div className="slogan">
             Webcomic sarcastique qui parle de romance, de maths et de langage,
@@ -74,6 +77,12 @@ function App() {
         <h2>{metadata.t || "Comic Introuvable"}</h2>
         <Navbar />
         <img src={`comics/${number}.jpg`} title={metadata.a} />
+        {metadata.a === undefined && (
+          <div>
+            {"Aidez-nous à le traduire sur "}
+            <a href="https://github.com/arnaudsm/xkcd-fr">github</a>
+          </div>
+        )}
         <Navbar />
         <div>
           {"Le strip original : "}
