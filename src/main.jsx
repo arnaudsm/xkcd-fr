@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-const comicCount = 279;
+const comicCount = 298;
 
 function App() {
   const [number, setNumber] = useState(comicCount);
