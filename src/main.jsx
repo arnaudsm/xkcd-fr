@@ -66,7 +66,7 @@ function App() {
         <img src={`comics/${number}.jpg`} title={metadata.a} />
         <Navbar />
         <div>
-          Le strip original : <a href="">https://xkcd.com/{number}/</a>
+          Le strip original : <a href={`https://xkcd.com/${number}/`}>https://xkcd.com/{number}/</a>
         </div>
       </div>
 
