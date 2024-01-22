@@ -1,0 +1,120 @@
+/* Mostly copied from xkcd.com, but made it responsive! */
+
+body {
+  background-color: #96a8c8;
+  text-align: center;
+  font-size: 16px;
+  font-variant: small-caps;
+  font-family: Lucida, Helvetica, sans-serif;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.box {
+  background: white;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: #071419;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+}
+
+.header img {
+  object-fit: contain;
+}
+
+.slogan {
+  padding: 20px;
+  display: inline-block;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 120%;
+  vertical-align: top;
+}
+
+h2 {
+  font-size: 20px;
+  font-variant: small-caps;
+  font-family: Lucida, sans-serif;
+  font-weight: 800;
+}
+
+a {
+  color: #96a8c8;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.nav > div {
+  background-color: #6e6e6e;
+  background-color: #6e7b91;
+  color: #fff;
+  border: 1.5px solid #333;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 1.5px 12px;
+  margin: 0 4px;
+  text-decoration: none;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 0 gray;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav > div:hover {
+  background-color: #fff;
+  color: #6e7b91;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  margin-top: 2rem;
+}
+
+.footnote {
+  clear: both;
+  font-size: 6px;
+  font-style: italic;
+  font-variant: small-caps;
+  font-weight: 800;
+}
+
+.footer {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 28rem;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .comic img {
+    width: 100%;
+  }
+
+  .header img {
+    width: 5rem;
+  }
+}
