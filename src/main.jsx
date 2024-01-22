@@ -33,7 +33,7 @@ function App() {
       setMetadata(json);
     } catch (error) {
       console.log(error);
-      setMetadata({});
+      setMetadata({ t: "Comic Introuvable", missing: true });
     }
     setNumber(newNumber);
     const href = `/${newNumber}`;
@@ -74,10 +74,10 @@ function App() {
         </div>
       </div>
       <div className="box comic">
-        <h2>{metadata.t || "Comic Introuvable"}</h2>
+        <h2>{metadata.t}</h2>
         <Navbar />
         <img src={`comics/${number}.jpg`} title={metadata.a} />
-        {metadata.a === undefined && (
+        {metadata.missing && (
           <div>
             {"Aidez-nous à le traduire sur "}
             <a href="https://github.com/arnaudsm/xkcd-fr">github</a>
