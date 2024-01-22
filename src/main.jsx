@@ -63,7 +63,7 @@ function App() {
       <div className="box comic">
         <h2>{metadata.t || "Comic Introuvable"}</h2>
         <Navbar />
-        <img src={`comics/${number}.jpg`} alt={metadata.a} />
+        <img src={`comics/${number}.jpg`} title={metadata.a} />
         <Navbar />
         <div>
           Le strip original : <a href="">https://xkcd.com/{number}/</a>
