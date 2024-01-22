@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div className="box header">
-        <img src="logo.png" alt="" />
+        <img src="logo.png" alt="Logo" />
         <div>
           <div className="slogan">
             Webcomic sarcastique qui parle de romance, de maths et de langage,
