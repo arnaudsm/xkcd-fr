@@ -2,24 +2,28 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-const comicCount = 123;
+const comicCount = 279;
 
 function App() {
   const [number, setNumber] = useState(comicCount);
-  const [metadata, setMetadata] = useState({})
+  const [metadata, setMetadata] = useState({});
 
   // Parse the URL at first load
   useEffect(() => {
     let newNumber = Number(window.location.pathname.slice(1)) || comicCount;
     openNumber(newNumber);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openNumber = async (newNumber) => {
     if (newNumber <= 0 || newNumber > comicCount) return false;
-    const res = await fetch(`/comics/${newNumber}.json`)
-    const json = await res.json()
-    setMetadata(json)
+    try {
+      const res = await fetch(`/comics/${newNumber}.json`);
+      const json = await res.json();
+      setMetadata(json);
+    } catch (error) {
+      console.log(error);
+    }
     setNumber(newNumber);
     const href = `/${newNumber}`;
     window.history.pushState({}, window.title, href);
@@ -57,7 +61,7 @@ function App() {
         </div>
       </div>
       <div className="box comic">
-        <h2>{metadata.t}</h2>
+        <h2>{metadata.t || "Comic Introuvable"}</h2>
         <Navbar />
         <img src={`comics/${number}.jpg`} alt={metadata.a} />
         <Navbar />
