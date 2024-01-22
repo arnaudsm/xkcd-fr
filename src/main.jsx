@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -8,15 +9,24 @@ function App() {
   const [number, setNumber] = useState(comicCount);
   const [metadata, setMetadata] = useState({});
 
-  // Parse the URL at first load
-  useEffect(() => {
+  const onLoad = () => {
     let newNumber = Number(window.location.pathname.slice(1)) || comicCount;
-    openNumber(newNumber);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    openNumber(newNumber, { noStatePush: true });
+  };
+
+  useEffect(() => {
+    // Parse the URL at first load
+    onLoad();
+
+    // Handle history changes
+    window.addEventListener("popstate", onLoad);
+    return () => {
+      window.removeEventListener("popstate", onLoad);
+    };
   }, []);
 
-  const openNumber = async (newNumber) => {
-    if (newNumber <= 0 || newNumber > comicCount) return false;
+  const openNumber = async (newNumber, { noStatePush } = {}) => {
+    if (newNumber <= 0 || newNumber > comicCount) return;
     try {
       const res = await fetch(`/comics/${newNumber}.json`);
       const json = await res.json();
@@ -26,7 +36,7 @@ function App() {
     }
     setNumber(newNumber);
     const href = `/${newNumber}`;
-    window.history.pushState({}, window.title, href);
+    if (!noStatePush) window.history.pushState({}, window.title, href);
   };
 
   const Navbar = () => (
@@ -66,7 +76,8 @@ function App() {
         <img src={`comics/${number}.jpg`} title={metadata.a} />
         <Navbar />
         <div>
-          Le strip original : <a href={`https://xkcd.com/${number}/`}>https://xkcd.com/{number}/</a>
+          {"Le strip original : "}
+          <a href={`https://xkcd.com/${number}/`}>https://xkcd.com/{number}/</a>
         </div>
       </div>
 
