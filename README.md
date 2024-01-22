@@ -2,7 +2,7 @@
 # XKCD en français 
 Traduit par Sophie, Phiip et Antoine de [lapin.org](https://lapin.org), puis repris et hébergé par [Arnaudsm](https://arnaud.at).
 
-Disponible sur [xkcd.arnaud.at](xkcd.arnaud.at)
+Disponible sur [xkcd.arnaud.at](https://xkcd.arnaud.at)
 
 N'hésitez pas à contribuer aux traductions !
 
