@@ -2,15 +2,25 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import comics from "./comics";
 
-const comicCount = 500;
+const numbers = Object.keys(comics);
+const defaultNumber = 470;
 
 function App() {
-  const [number, setNumber] = useState(comicCount);
-  const [metadata, setMetadata] = useState({});
+  const [number, setNumber] = useState(defaultNumber);
+  const [title, subTitle] = comics[number] || [];
+  const previousNumber =
+    numbers[numbers.indexOf(number?.toString()) - 1] || numbers.at(-1);
+  const nextNumber =
+    numbers[numbers.indexOf(number?.toString()) + 1] || numbers.at(-1);
 
   const onLoad = () => {
-    let newNumber = Number(window.location.pathname.slice(1)) || comicCount;
+    const path = window.location.pathname;
+    let newNumber = defaultNumber;
+    if (!["/", ""].includes(path) && !isNaN(Number(path.slice(1)))) {
+      newNumber = Number(path.slice(1));
+    }
     openNumber(newNumber, { noStatePush: true });
   };
 
@@ -26,34 +36,26 @@ function App() {
   }, []);
 
   const openNumber = async (newNumber, { noStatePush } = {}) => {
-    if (newNumber <= 0 || newNumber > comicCount) return;
-    try {
-      const res = await fetch(`/comics/${newNumber}.json`);
-      const json = await res.json();
-      setMetadata(json);
-    } catch (error) {
-      console.log(error);
-      setMetadata({ t: "Comic Introuvable", missing: true });
-    }
     setNumber(newNumber);
-    const href = `/${newNumber}`;
-    if (!noStatePush) window.history.pushState({}, window.title, href);
+    if (noStatePush) return;
+    window.history.pushState({}, window.title, `/${newNumber}`);
   };
 
   const Navbar = () => (
     <div className="nav">
-      <div onClick={() => openNumber(1)}>{"|<"}</div>
-      <div onClick={() => openNumber(number - 1)}>{"< Avant"}</div>
+      <div onClick={() => openNumber(numbers[0])}>{"|<"}</div>
+      <div onClick={() => openNumber(previousNumber)}>{"< Avant"}</div>
       <div
         onClick={() => {
-          const randomNumber = Math.floor(Math.random() * comicCount) + 1;
+          const randomNumber =
+            numbers[Math.floor(Math.random() * numbers.length)];
           openNumber(randomNumber);
         }}
       >
         {"Aléatoire"}
       </div>
-      <div onClick={() => openNumber(number + 1)}>{"Après >"}</div>
-      <div onClick={() => openNumber(comicCount)}>{">|"}</div>
+      <div onClick={() => openNumber(nextNumber)}>{"Après >"}</div>
+      <div onClick={() => openNumber(numbers.at(-1))}>{">|"}</div>
     </div>
   );
 
@@ -74,10 +76,10 @@ function App() {
         </div>
       </div>
       <div className="box comic">
-        <h2>{metadata.t}</h2>
+        <h2>{title || "Comic Introuvable"}</h2>
         <Navbar />
-        <img src={`comics/${number}.jpg`} title={metadata.a} />
-        {metadata.missing && (
+        <img src={`comics/${number}.jpg`} title={subTitle} />
+        {!title && (
           <div>
             {"Aidez-nous à le traduire sur "}
             <a href="https://github.com/arnaudsm/xkcd-fr">github</a>
@@ -122,5 +124,5 @@ export default App;
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
