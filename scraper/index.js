@@ -5,7 +5,9 @@ import { pRateLimit } from "p-ratelimit";
 
 // Scrape the old translations from the defunct xkcd.lapin.org
 
-const outputDir = "../public/comics"
+export const jpgDir = "../public/comics";
+export const metadataDir = "./metadata";
+export const totalComics = 1000;
 
 const limit = pRateLimit({
   interval: 60 * 1000,
@@ -24,7 +26,7 @@ const download_image = (url, image_path) =>
           .pipe(fs.createWriteStream(image_path))
           .on("finish", () => resolve())
           .on("error", (e) => reject(e));
-      })
+      }),
   );
 
 const main = async () => {
@@ -45,8 +47,8 @@ const main = async () => {
 
   const getComic = async (number) => {
     try {
-      const metaFile = `${outputDir}/${number}.json`;
-      const imageFile = `${outputDir}/${number}.jpg`;
+      const metaFile = `${metadataDir}/${number}.json`;
+      const imageFile = `${jpgDir}/${number}.jpg`;
 
       if (fs.existsSync(metaFile) && fs.existsSync(imageFile)) return;
 
@@ -57,14 +59,14 @@ const main = async () => {
         alt: document.querySelector("#content>.bd>.c>.s> div:not(.buttons) img")
           .alt,
         img_src: document.querySelector(
-          "#content>.bd>.c>.s> div:not(.buttons) img"
+          "#content>.bd>.c>.s> div:not(.buttons) img",
         ).currentSrc,
       }));
       await download_image(data.img_src, imageFile);
 
       fs.writeFileSync(
         metaFile,
-        JSON.stringify({ t: data.title, a: data.alt })
+        JSON.stringify({ t: data.title, a: data.alt }),
       );
       console.log("FINISHED", number);
     } catch (error) {
@@ -72,9 +74,7 @@ const main = async () => {
     }
   };
 
-  const numbers = [...Array(981).keys()].map((x) => x + 1);
+  const numbers = [...Array(totalComics).keys()].map((x) => x + 1);
   for (const number of numbers) await limit(() => getComic(number));
   await browser.close();
 };
-
-main();
