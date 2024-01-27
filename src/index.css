@@ -109,6 +109,10 @@ a:hover {
   gap: 1rem;
 }
 
+.comic img {
+  max-width: 100%;
+}
+
 @media (max-width: 600px) {
   .comic img {
     width: 100%;
